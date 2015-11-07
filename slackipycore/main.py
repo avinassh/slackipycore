@@ -1,8 +1,8 @@
 import requests
 
-from slackipy_exceptions import (AlreadyInTeam, InvalidInviteeEmail,
-                                 InvalidAuthToken, AlreadyInvited,
-                                 APIRequestError)
+from .slackipy_exceptions import (AlreadyInTeam, InvalidInviteeEmail,
+                                  InvalidAuthToken, AlreadyInvited,
+                                  APIRequestError)
 
 
 invite_api_url = "https://{team_name}.slack.com/api/users.admin.invite"
@@ -44,7 +44,7 @@ def _process_response(response):
     response_data = response.json()
 
     if not response.status_code == requests.codes.ok:
-        raise APIRequestError
+        raise APIRequestError('api_error')
 
     if not response_data.get('ok'):
         _check_error(response_data['error'])
@@ -54,10 +54,10 @@ def _process_response(response):
 
 def _check_error(error):
     if error == 'invalid_auth':
-        raise InvalidAuthToken
+        raise InvalidAuthToken(error)
     if error == 'already_in_team':
-        raise AlreadyInTeam
+        raise AlreadyInTeam(error)
     if error == 'invalid_email':
-        raise InvalidInviteeEmail
+        raise InvalidInviteeEmail(error)
     if error == 'already_invited':
-        raise AlreadyInvited
+        raise AlreadyInvited(error)
