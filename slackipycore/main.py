@@ -5,14 +5,14 @@ from .slackipy_exceptions import (AlreadyInTeam, InvalidInviteeEmail,
                                   APIRequestError)
 
 
-invite_api_url = "https://{team_name}.slack.com/api/users.admin.invite"
-users_api_url = ("https://{team_name}.slack.com/api/users.list?"
+invite_api_url = "https://{team_id}.slack.com/api/users.admin.invite"
+users_api_url = ("https://{team_id}.slack.com/api/users.list?"
                  "token={api_token}&presence=1")
-team_api_url = "https://{team_name}.slack.com/api/team.info?token={api_token}"
+team_api_url = "https://{team_id}.slack.com/api/team.info?token={api_token}"
 
 
-def invite(team_name, api_token, invitee_email):
-    url = invite_api_url.format(team_name=team_name)
+def invite(team_id, api_token, invitee_email):
+    url = invite_api_url.format(team_id=team_id)
     payload = {'email': invitee_email, 'token': api_token}
     r = requests.post(url, data=payload)
 
@@ -21,8 +21,8 @@ def invite(team_name, api_token, invitee_email):
     return True
 
 
-def get_users(team_name, api_token):
-    url = users_api_url.format(team_name=team_name, api_token=api_token)
+def get_users(team_id, api_token):
+    url = users_api_url.format(team_id=team_id, api_token=api_token)
     r = requests.get(url)
     response_data = _process_response(response=r)
 
@@ -32,8 +32,8 @@ def get_users(team_name, api_token):
     return (total_users, online_users)
 
 
-def get_team_info(team_name, api_token):
-    url = team_api_url.format(team_name=team_name, api_token=api_token)
+def get_team_info(team_id, api_token):
+    url = team_api_url.format(team_id=team_id, api_token=api_token)
     r = requests.get(url)
     response_data = _process_response(response=r)
 
