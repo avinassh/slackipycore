@@ -11,7 +11,7 @@ except (IOError, ImportError):
 with open('requirements.txt') as f:
     requirements = f.read().splitlines()
 
-version = '0.0.3'
+version = '0.0.4'
 
 setup(
     name='slackipycore',
